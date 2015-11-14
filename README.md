@@ -1,3 +1,3 @@
 # pandatv
-=========
-如果在mac上使用需要安装terminal-notifier
+===
+如果在mac上使用最好安装terminal-notifier
