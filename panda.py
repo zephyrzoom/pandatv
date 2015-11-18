@@ -5,7 +5,6 @@ import socket
 import json
 import time
 import threading
-import re
 import os
 import kmp
 import platform
@@ -22,6 +21,16 @@ DANMU_TYPE = '1'
 BAMBOO_TYPE = '206'
 AUDIENCE_TYPE = '207'
 SYSINFO = platform.system()
+
+def loadInit():
+    with open('init.property', 'r') as f:
+        init = f.read()
+        init = init.split('\n')
+        roomid = init[0].split(':')[1]
+        #username = init[1].split(':')[1]
+        #password = init[2].split(':')[1]
+        return roomid
+
 
 def notify(title, message):
     if SYSINFO == 'Windows':
@@ -99,8 +108,8 @@ def formatMsg(recvMsg):
             notify(nickName, content)
         elif jsonMsg['type'] == BAMBOO_TYPE:
             nickName = jsonMsg['data']['from']['nickName']
-            print(nickName + "送给主播" + content + "个竹子")
-            notify(nickName, "送给主播" + content + "个竹子")
+            print(nickName + "送给主播[" + content + "]个竹子")
+            notify(nickName, "送给主播[" + content + "]个竹子")
         elif jsonMsg['type'] == AUDIENCE_TYPE:
             print('===========观众人数' + content + '==========')
         else:
@@ -109,8 +118,24 @@ def formatMsg(recvMsg):
         pass
 
 
+def testRoomid(roomid):
+    if not roomid:
+        roomid = input('roomid:')
+        with open('init.property', 'r') as f:
+            init = f.readlines()
+            editInit = ''
+            for i in init:
+                if 'roomid' in i:
+                    i = i[:-1] + str(roomid)
+                editInit += i + '\n'
+        with open('init.property', 'w') as f:
+            f.write(''.join(editInit))
+    return roomid
+
+
 def main():
-    roomid = input('roomid:')
+    roomid = loadInit()
+    roomid = testRoomid(roomid)
     getChatInfo(roomid)
 
 if __name__ == '__main__':
