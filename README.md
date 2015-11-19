@@ -4,8 +4,7 @@
 
 ##如何运行
 - 请先编辑init.properties文件中的房间号
-
-    python panda.py
+- `python panda.py`
 
 ##关于Mac
 - 请先安装[terminal-notifier](https://github.com/julienXX/terminal-notifier)
