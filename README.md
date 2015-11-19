@@ -4,6 +4,7 @@
 
 ##如何运行
 请先编辑init.properties文件中的房间号
+
     python panda.py
 
 ##关于Mac
