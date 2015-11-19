@@ -21,9 +21,12 @@ DANMU_TYPE = '1'
 BAMBOO_TYPE = '206'
 AUDIENCE_TYPE = '207'
 SYSINFO = platform.system()
+INIT_PROPERTIES = 'init.properties'
+
+
 
 def loadInit():
-    with open('init.property', 'r') as f:
+    with open(INIT_PROPERTIES, 'r') as f:
         init = f.read()
         init = init.split('\n')
         roomid = init[0].split(':')[1]
@@ -84,7 +87,11 @@ def getChatInfo(roomid):
                 s.recv(IGNORE_LEN)
                 recvLen -= IGNORE_LEN
                 recvMsg = s.recv(recvLen)   #chat msg
-                analyseMsg(recvMsg)
+                #print(recvMsg)
+                try:
+                    analyseMsg(recvMsg)
+                except Exception as e:
+                    pass
 
 
 
@@ -98,6 +105,8 @@ def analyseMsg(recvMsg):
         formatMsg(preMsg)
         formatMsg(nextMsg)
 
+# pass one audience alert
+is_second_audience = False
 def formatMsg(recvMsg):
     try:
         jsonMsg = eval(recvMsg)
@@ -111,7 +120,12 @@ def formatMsg(recvMsg):
             print(nickName + "送给主播[" + content + "]个竹子")
             notify(nickName, "送给主播[" + content + "]个竹子")
         elif jsonMsg['type'] == AUDIENCE_TYPE:
-            print('===========观众人数' + content + '==========')
+            global is_second_audience
+            if is_second_audience:
+                print('===========观众人数' + content + '==========')
+                is_second_audience = False
+            else:
+                is_second_audience = True
         else:
             pass
     except Exception as e:
@@ -121,14 +135,14 @@ def formatMsg(recvMsg):
 def testRoomid(roomid):
     if not roomid:
         roomid = input('roomid:')
-        with open('init.property', 'r') as f:
+        with open(INIT_PROPERTIES, 'r') as f:
             init = f.readlines()
             editInit = ''
             for i in init:
                 if 'roomid' in i:
                     i = i[:-1] + str(roomid)
                 editInit += i + '\n'
-        with open('init.property', 'w') as f:
+        with open(INIT_PROPERTIES, 'w') as f:
             f.write(''.join(editInit))
     return roomid
 
