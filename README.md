@@ -3,7 +3,7 @@
 程序仅在Linux下测试，请使用Python3以上版本运行。
 
 ##如何运行
-- 请先编辑init.properties文件中的房间号
+- 编辑init.properties文件中的房间号
 - `python panda.py`
 
 ##关于Mac
