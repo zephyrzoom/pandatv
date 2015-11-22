@@ -112,7 +112,12 @@ def formatMsg(recvMsg):
         jsonMsg = eval(recvMsg)
         content = jsonMsg['data']['content']
         if jsonMsg['type'] == DANMU_TYPE:
+            identity = jsonMsg['data']['from']['identity']
             nickName = jsonMsg['data']['from']['nickName']
+            if identity == '60':
+                nickName = '*房管*' + nickName
+            if identity == '90':
+                nickName = '*主播*' + nickName
             print(nickName + ":" + content)
             notify(nickName, content)
         elif jsonMsg['type'] == BAMBOO_TYPE:
