@@ -22,6 +22,9 @@ BAMBOO_TYPE = '206'
 AUDIENCE_TYPE = '207'
 SYSINFO = platform.system()
 INIT_PROPERTIES = 'init.properties'
+MANAGER = '60'
+SP_MANAGER = '120'
+HOSTER = '90'
 
 
 
@@ -114,9 +117,15 @@ def formatMsg(recvMsg):
         if jsonMsg['type'] == DANMU_TYPE:
             identity = jsonMsg['data']['from']['identity']
             nickName = jsonMsg['data']['from']['nickName']
-            if identity == '60':
+            try:
+                spIdentity = jsonMsg['data']['from']['sp_identity']
+                if spIdentity == SP_MANAGER:
+                    nickName = '*超管*' + nickName
+            except Exception as e:
+                pass
+            if identity == MANAGER:
                 nickName = '*房管*' + nickName
-            if identity == '90':
+            if identity == HOSTER:
                 nickName = '*主播*' + nickName
             print(nickName + ":" + content)
             notify(nickName, content)
