@@ -8,8 +8,7 @@
 ##如何运行
 - 请确定已经安装了python3以上版本
 - 编辑init.properties文件中的房间号
-- 若双击无法运行，请在从终端进入该程序目录运行下面命令:
-- `python panda.py`
+- 若双击无法运行，请从终端进入该程序目录运行命令:`python panda.py`
 
 ##关于Mac
 - 请先安装[terminal-notifier](https://github.com/julienXX/terminal-notifier)
