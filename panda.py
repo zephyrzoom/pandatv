@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#author=zeek
+#author=707
 import urllib.request
 import socket
 import json
@@ -104,9 +104,9 @@ def analyseMsg(recvMsg):
         formatMsg(recvMsg)
     else:
         preMsg = recvMsg[:position + len(DELIMITER)]
-        nextMsg = recvMsg[position + len(DELIMITER) + IGNORE_LEN:]
         formatMsg(preMsg)
-        formatMsg(nextMsg)
+        # analyse last msg
+        analyseMsg(recvMsg[position + len(DELIMITER) + IGNORE_LEN:])
 
 # pass one audience alert
 is_second_audience = False
