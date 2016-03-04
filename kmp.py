@@ -82,19 +82,19 @@ def kmpTb(w):
     t.append(0)
     while pos < len(w):
         if w[pos-1] == w[cnd]:
-            t[pos] = cnd + 1
+            t.insert(pos, cnd + 1)
             cnd = cnd + 1
             pos = pos + 1
         elif cnd > 0:
             cnd = t[cnd]
         else:
-            t[pos] = 0
+            t.insert(pos, 0)
             pos = pos + 1
     return t
 
 if __name__ == '__main__':
-    s = b'1}}9\u6587\u80f8\u6\u5976\u5927\u79c0\u8eab\u6750"}}fesfefojji'
-    w = b'}}'
+    s = b'1}9\u6587\u80f}}}8\u6\u5976\u5927\u79c0\u8eab\u6750"}}fesfefojji'
+    w = b'}}}'
     t = kmpTb(w)
     ppsition = kmp(s, w, t)
     print(ppsition)

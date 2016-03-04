@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-#author=707
+__author__='707<707472783@qq.com>'
 import urllib.request
 import socket
 import json
@@ -11,7 +11,9 @@ import platform
 
 CHATINFOURL = 'http://www.panda.tv/ajax_chatinfo?roomid='
 DELIMITER = b'}}'
+DELIMITER3 = b'}}}'
 KMP_TABLE = kmp.kmpTb(DELIMITER)
+KMP_TABLE3 = kmp.kmpTb(DELIMITER3)
 IGNORE_LEN = 16
 FIRST_REQ = b'\x00\x06\x00\x02'
 FIRST_RPS = b'\x00\x06\x00\x06'
@@ -20,6 +22,7 @@ RECVMSG = b'\x00\x06\x00\x03'
 DANMU_TYPE = '1'
 BAMBOO_TYPE = '206'
 AUDIENCE_TYPE = '207'
+TU_HAO_TYPE = '306'
 SYSINFO = platform.system()
 INIT_PROPERTIES = 'init.properties'
 MANAGER = '60'
@@ -96,20 +99,30 @@ def getChatInfo(roomid):
                 except Exception as e:
                     pass
 
-
-
 def analyseMsg(recvMsg):
     position = kmp.kmp(recvMsg, DELIMITER, KMP_TABLE)
-    if position == len(recvMsg) - len(DELIMITER):
-        formatMsg(recvMsg)
-    else:
+    position3 = kmp.kmp(recvMsg, DELIMITER3, KMP_TABLE3)
+    if position3 == None:
+        if position == len(recvMsg) - len(DELIMITER):
+            formatMsg(recvMsg)
+        else:
+            preMsg = recvMsg[:position + len(DELIMITER)]
+            formatMsg(preMsg)
+            analyseMsg(recvMsg[position + len(DELIMITER) + IGNORE_LEN:])
+    elif position3 - position > 150:
         preMsg = recvMsg[:position + len(DELIMITER)]
         formatMsg(preMsg)
-        # analyse last msg
-        analyseMsg(recvMsg[position + len(DELIMITER) + IGNORE_LEN:])
+        analyseMsg(recvMsg[position + len(DELIMIER) + IGNORE_LEN:])
 
-# pass one audience alert
-is_second_audience = False
+    else:
+        if position3 == len(recvMsg) - len(DELIMITER3):
+            formatMsg(recvMsg)
+        else:
+            preMsg = recvMsg[:position3 + len(DELIMITER3)]
+            formatMsg(preMsg)
+            analyseMsg(recvMsg[position3 + len(DELIMITER3) + IGNORE_LEN:])
+
+
 def formatMsg(recvMsg):
     try:
         jsonMsg = eval(recvMsg)
@@ -128,21 +141,21 @@ def formatMsg(recvMsg):
             if identity == HOSTER:
                 nickName = '*主播*' + nickName
             print(nickName + ":" + content)
-            notify(nickName, content)
+#            notify(nickName, content)
         elif jsonMsg['type'] == BAMBOO_TYPE:
             nickName = jsonMsg['data']['from']['nickName']
             print(nickName + "送给主播[" + content + "]个竹子")
-            notify(nickName, "送给主播[" + content + "]个竹子")
+#            notify(nickName, "送给主播[" + content + "]个竹子")
+        elif jsonMsg['type'] == TU_HAO_TYPE:
+            nickName = jsonMsg['data']['from']['nickName']
+            price = jsonMsg['data']['content']['price']
+            print('===========' + nickName + "送给主播[" + price + "]个猫币" + '==========')
         elif jsonMsg['type'] == AUDIENCE_TYPE:
-            global is_second_audience
-            if is_second_audience:
-                print('===========观众人数' + content + '==========')
-                is_second_audience = False
-            else:
-                is_second_audience = True
+            print('===========观众人数' + content + '==========')
         else:
             pass
     except Exception as e:
+        print(recvMsg)
         pass
 
 
