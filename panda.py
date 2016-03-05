@@ -6,15 +6,12 @@ import json
 import time
 import threading
 import os
-import kmp
 import platform
 
 CHATINFOURL = 'http://www.panda.tv/ajax_chatinfo?roomid='
-DELIMITER = b'}}'
-DELIMITER3 = b'}}}'
-KMP_TABLE = kmp.kmpTb(DELIMITER)
-KMP_TABLE3 = kmp.kmpTb(DELIMITER3)
-IGNORE_LEN = 16
+IGNORE_LEN = 12
+META_LEN = 4
+CHECK_LEN = 4
 FIRST_REQ = b'\x00\x06\x00\x02'
 FIRST_RPS = b'\x00\x06\x00\x06'
 KEEPALIVE = b'\x00\x06\x00\x00'
@@ -70,12 +67,11 @@ def getChatInfo(roomid):
         msgLen = len(msg)
         sendMsg = FIRST_REQ + int.to_bytes(msgLen, 2, 'big') + msg
         s.sendall(sendMsg)
-        recvMsg = s.recv(4)
+        recvMsg = s.recv(CHECK_LEN)
         if recvMsg == FIRST_RPS:
             print('成功连接弹幕服务器')
             recvLen = int.from_bytes(s.recv(2), 'big')
-        #s.send(b'\x00\x06\x00\x00')
-        #print(s.recv(4))
+            s.recv(recvLen)
         def keepalive():
             while True:
                 #print('================keepalive=================')
@@ -84,44 +80,27 @@ def getChatInfo(roomid):
         threading.Thread(target=keepalive).start()
 
         while True:
-            recvMsg = s.recv(4)
+            recvMsg = s.recv(CHECK_LEN)
             if recvMsg == RECVMSG:
                 recvLen = int.from_bytes(s.recv(2), 'big')
                 recvMsg = s.recv(recvLen)   #ack:0
-                #print(recvMsg)
-                recvLen = int.from_bytes(s.recv(4), 'big')
-                s.recv(IGNORE_LEN)
-                recvLen -= IGNORE_LEN
-                recvMsg = s.recv(recvLen)   #chat msg
-                #print(recvMsg)
+                totalLen = int.from_bytes(s.recv(META_LEN), 'big')
                 try:
-                    analyseMsg(recvMsg)
+                    analyseMsg(s, totalLen)
                 except Exception as e:
                     pass
 
-def analyseMsg(recvMsg):
-    position = kmp.kmp(recvMsg, DELIMITER, KMP_TABLE)
-    position3 = kmp.kmp(recvMsg, DELIMITER3, KMP_TABLE3)
-    if position3 == None:
-        if position == len(recvMsg) - len(DELIMITER):
-            formatMsg(recvMsg)
-        else:
-            preMsg = recvMsg[:position + len(DELIMITER)]
-            formatMsg(preMsg)
-            analyseMsg(recvMsg[position + len(DELIMITER) + IGNORE_LEN:])
-    elif position3 - position > 150:
-        preMsg = recvMsg[:position + len(DELIMITER)]
-        formatMsg(preMsg)
-        analyseMsg(recvMsg[position + len(DELIMIER) + IGNORE_LEN:])
-
-    else:
-        if position3 == len(recvMsg) - len(DELIMITER3):
-            formatMsg(recvMsg)
-        else:
-            preMsg = recvMsg[:position3 + len(DELIMITER3)]
-            formatMsg(preMsg)
-            analyseMsg(recvMsg[position3 + len(DELIMITER3) + IGNORE_LEN:])
-
+def analyseMsg(s, totalLen):
+    while totalLen > 0:
+        s.recv(IGNORE_LEN)
+        recvLen = int.from_bytes(s.recv(META_LEN), 'big')
+        recvMsg = s.recv(recvLen)
+        # recv the whole msg.
+        while recvLen > len(recvMsg):
+            recvMsg = b''.join(recvMsg, s.recv(recvLen - len(recvMsg)))
+        formatMsg(recvMsg)
+        totalLen = totalLen - IGNORE_LEN - META_LEN - recvLen
+    
 
 def formatMsg(recvMsg):
     try:
@@ -149,7 +128,7 @@ def formatMsg(recvMsg):
         elif jsonMsg['type'] == TU_HAO_TYPE:
             nickName = jsonMsg['data']['from']['nickName']
             price = jsonMsg['data']['content']['price']
-            print('===========' + nickName + "送给主播[" + price + "]个猫币" + '==========')
+            print('*********' + nickName + "送给主播[" + price + "]个猫币" + '**********')
         elif jsonMsg['type'] == AUDIENCE_TYPE:
             print('===========观众人数' + content + '==========')
         else:
