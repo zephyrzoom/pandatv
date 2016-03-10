@@ -120,15 +120,16 @@ def formatMsg(recvMsg):
             if identity == HOSTER:
                 nickName = '*主播*' + nickName
             print(nickName + ":" + content)
-#            notify(nickName, content)
+            notify(nickName, content)
         elif jsonMsg['type'] == BAMBOO_TYPE:
             nickName = jsonMsg['data']['from']['nickName']
             print(nickName + "送给主播[" + content + "]个竹子")
-#            notify(nickName, "送给主播[" + content + "]个竹子")
+            notify(nickName, "送给主播[" + content + "]个竹子")
         elif jsonMsg['type'] == TU_HAO_TYPE:
             nickName = jsonMsg['data']['from']['nickName']
             price = jsonMsg['data']['content']['price']
             print('*********' + nickName + "送给主播[" + price + "]个猫币" + '**********')
+            notify(nickName, "送给主播[" + price + "]个猫币")
         elif jsonMsg['type'] == AUDIENCE_TYPE:
             print('===========观众人数' + content + '==========')
         else:
