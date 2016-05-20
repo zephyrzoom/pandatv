@@ -7,6 +7,7 @@ import time
 import threading
 import os
 import platform
+import re
 
 CHATINFOURL = 'http://www.panda.tv/ajax_chatinfo?roomid='
 IGNORE_LEN = 12
@@ -119,6 +120,10 @@ def formatMsg(recvMsg):
                 nickName = '*房管*' + nickName
             if identity == HOSTER:
                 nickName = '*主播*' + nickName
+            #识别表情
+            emoji = re.match(r"\[:(.*)](.*)", content)
+            if emoji:
+                content = '*' + emoji.group(1) + '*' + emoji.group(2)
             print(nickName + ":" + content)
             notify(nickName, content)
         elif jsonMsg['type'] == BAMBOO_TYPE:
