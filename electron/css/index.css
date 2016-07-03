@@ -1,0 +1,17 @@
+.table-striped {
+  overflow-y: auto;
+}
+#roomid {
+  width: 80%;
+}
+.pane {
+  text-align: center;
+}
+
+.form-group {
+  margin-top: 30px;
+}
+
+.uname {
+  color: rgb(22, 180, 85);
+}
