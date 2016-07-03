@@ -149,21 +149,17 @@
                 } else if (identity == HOSTER) {
                     nickName = '*主播*' + nickName;
                 }
-                console.log(nickName + ':' + content);
                 updateMsg(nickName, content);
             } else if (msg.type == BAMBOO_TYPE) {
                 nickName = msg.data.from.nickName;
-                console.log(nickName + '送给主播[' + content + ']个竹子');
                 content = '送给主播[' + content + ']个竹子';
                 updateMsg(nickName, content);
             } else if (msg.type == TU_HAO_TYPE) {
                 nickName = msg.data.from.nickName;
                 price = msg.data.content.price;
-                console.log('*******' + nickName + '送给主播[' + price + ']个猫币' + '*******');
                 content = '送给主播[' + price + ']个猫币';
                 updateMsg(nickName, content);
             } else if (msg.type == AUDIENCE_TYPE) {
-                console.log('==========观众人数' + content + '==========');
                 updateMsg('观众人数', content);
             }
         }
