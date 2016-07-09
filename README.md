@@ -13,11 +13,11 @@
 - 若双击无法运行，请从终端进入该程序目录运行命令:`python panda.py`
 
 ###node
-- 点开文件将最后一行可以改房间号
+- 点开文件最后一行可以改房间号
 
 ###electron
 - 将文件部署在electron的resource中即可运行
 - 不懂的请参考[electron](https://github.com/electron/electron)帮助文件
 
-##python版关于Mac
-- 请先安装[terminal-notifier](https://github.com/julienXX/terminal-notifier)
+##关于MAC
+**若需要提示框，请先安装[terminal-notifier](https://github.com/julienXX/terminal-notifier)**
