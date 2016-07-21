@@ -203,7 +203,16 @@
       githubLink.addEventListener('click', function(event) {
         shell.openExternal('http://github.com/zephyrzoom');
       });
+
+      // 回车登录
+      $('#roomid').keypress(function (event) {
+        if (event.which == 13) {
+          setRoomId();
+        }
+      });
     });
+
+
   </script>
   <div class="window">
     <div class="window-content">
