@@ -2,7 +2,8 @@
   overflow-y: auto;
 }
 #roomid {
-  width: 80%;
+  width: 200px;
+  margin: 10px;
 }
 .pane {
   text-align: center;
@@ -14,4 +15,8 @@
 
 .uname {
   color: rgb(22, 180, 85);
+}
+
+.toolbar {
+  text-align: center;
 }
