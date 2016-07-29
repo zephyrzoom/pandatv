@@ -3,6 +3,10 @@
 有三个版本可供选择，python、nodejs和electron。
 程序已在Linuxmint、OSX、Win8.1下测试。
 
+![login](/docs/static_files/login.png)
+
+![danmu](/docs/static_files/danmu.png)
+
 ##下载
 - 最新版本[release](https://github.com/zephyrzoom/pandatv/releases)
 
