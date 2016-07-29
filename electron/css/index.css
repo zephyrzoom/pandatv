@@ -3,7 +3,7 @@
 }
 #roomid {
   width: 200px;
-  margin: 10px;
+  margin: 5px;
 }
 .pane {
   text-align: center;
@@ -19,4 +19,8 @@
 
 .toolbar {
   text-align: center;
+}
+
+.num {
+  margin: 5px;
 }

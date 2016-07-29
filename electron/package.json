@@ -3,6 +3,6 @@
   "version": "0.0.1",
   "main": "main.js",
   "devDependencies": {
-    "electron-prebuilt": "^1.2.2"
+    "electron-prebuilt": "^1.2.8"
   }
 }

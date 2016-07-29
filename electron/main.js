@@ -7,23 +7,8 @@ let danmu;
 let login;
 
 function createWindow() {
-    danmu = new BrowserWindow({
-        width: 400,
-        height: 600,
-        autoHideMenuBar: true,
-        icon: __dirname + '/assets/favicon.ico',
-        show: false
-    });
-    danmu.loadURL(`file://${__dirname}/danmu.html`);
-    danmu.on('closed', () => {
-        danmu = null;
-        if (login != null) {
-            login.close();
-        }
-    });
-
     login = new BrowserWindow({
-        width: 400,
+        width: 300,
         height: 200,
         autoHideMenuBar: true,
         icon: __dirname + '/assets/favicon.ico',
@@ -32,12 +17,7 @@ function createWindow() {
 
     login.on('closed', () => {
         login = null;
-        if (danmu != null) {
-            danmu.close();
-        }
     });
-
-
 }
 
 app.on('ready', createWindow);
@@ -55,7 +35,19 @@ app.on('activate', () => {
 });
 
 ipcMain.on('login', (event, arg) => {
-    login.hide();
-    danmu.show();
-    danmu.webContents.send('roomid', arg);
+    danmu = new BrowserWindow({
+        width: 300,
+        height: 500,
+        autoHideMenuBar: true,
+        icon: __dirname + '/assets/favicon.ico',
+    });
+    danmu.loadURL(`file://${__dirname}/danmu.html`);
+
+    danmu.on('closed', () => {
+        danmu = null;
+    });
+    danmu.webContents.on('did-finish-load', () => {
+        danmu.webContents.send('roomid', arg);
+    });
+    login.close();
 });

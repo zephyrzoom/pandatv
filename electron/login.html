@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>707弹幕助手</title>
+  <link rel="stylesheet" href="css/index.css">
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/photon.min.css">
+  <!-- Jquery -->
+  <script>
+    window.$ = window.jQuery = require('./js/jquery.js');
+  </script>
+
+</head>
+
+<body>
+  <script>
+    // 设置房间号
+    function setRoomId() {
+      var roomid = document.getElementById('roomid').value;
+      const {ipcRenderer} = require('electron');
+      ipcRenderer.send('login', roomid);
+    }
+
+    // github链接
+    $(document).ready(function() {
+      const {
+        shell
+      } = require('electron');
+      const githubLink = document.getElementById('github');
+      githubLink.addEventListener('click', function(event) {
+        shell.openExternal('http://github.com/zephyrzoom');
+      });
+
+      // 回车登录
+      $('#roomid').keypress(function (event) {
+        if (event.which == 13) {
+          setRoomId();
+        }
+      });
+    });
+
+
+  </script>
+  <div class="window">
+    <div class="window-content">
+      <div class="pane-group">
+        <div class="pane" id="pane">
+          <form>
+            <div class="form-group">
+              <h5>请输入房间号</h5>
+              <input type="text" class="form-control" placeholder="房间号" id="roomid" maxlength="10" autofocus="autofocus">
+              <button onclick="setRoomId()" class="btn btn-primary btn-large">连接</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <footer class="toolbar toolbar-footer">
+      <h1 class="title"><a id="github"><span class="icon icon-github"></span></a></h1>
+    </footer>
+  </div>
+</body>
+
+</html>
