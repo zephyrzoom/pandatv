@@ -72,7 +72,7 @@ function start(chatInfo) {
 
     setInterval(function() {
         sendKeepalive(s);
-    }, 300000);
+    }, 150000);
 }
 
 
@@ -148,4 +148,4 @@ function formatMsg(msg) {
         console.log('==========观众人数' + content + '==========');
     }
 }
-getChatInfo(88911);
+getChatInfo(66666);

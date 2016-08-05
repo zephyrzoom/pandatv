@@ -77,7 +77,7 @@ def getChatInfo(roomid):
             while True:
                 #print('================keepalive=================')
                 s.send(KEEPALIVE)
-                time.sleep(300)
+                time.sleep(150)
         threading.Thread(target=keepalive).start()
 
         while True:
@@ -101,7 +101,7 @@ def analyseMsg(s, totalLen):
             recvMsg = b''.join(recvMsg, s.recv(recvLen - len(recvMsg)))
         formatMsg(recvMsg)
         totalLen = totalLen - IGNORE_LEN - META_LEN - recvLen
-    
+
 
 def formatMsg(recvMsg):
     try:
