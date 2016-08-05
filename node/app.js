@@ -11,7 +11,7 @@ function getChatInfo(roomid) {
             var socketPort = chatAddr.split(':')[1];
             var rid = jsonData.rid;
             var appid = jsonData.appid;
-            var authtype = jsonData.authtype;
+            var authtype = jsonData.authType;
             var sign = jsonData.sign;
             var ts = jsonData.ts;
             //console.log(socketIP, socketPort, rid, appid, authtype, sign, ts);

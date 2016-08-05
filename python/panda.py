@@ -61,7 +61,7 @@ def getChatInfo(roomid):
         s.connect((socketIP,socketPort))
         rid      = str(chatInfo['data']['rid']).encode('utf-8')
         appid    = str(chatInfo['data']['appid']).encode('utf-8')
-        authtype = str(chatInfo['data']['authtype']).encode('utf-8')
+        authtype = str(chatInfo['data']['authType']).encode('utf-8')
         sign     = str(chatInfo['data']['sign']).encode('utf-8')
         ts       = str(chatInfo['data']['ts']).encode('utf-8')
         msg  = b'u:' + rid + b'@' + appid + b'\nk:1\nt:300\nts:' + ts + b'\nsign:' + sign + b'\nauthtype:' + authtype
