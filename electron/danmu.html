@@ -21,7 +21,7 @@
     const {ipcRenderer} = require('electron');
 
     function getChatInfo(roomid) {
-      http.get('http://www.panda.tv/ajax_chatinfo?roomid=' + roomid, function(res) {
+      http.get('http://riven.panda.tv/chatroom/getinfo?roomid=' + roomid, function(res) {
         res.on('data', function(chunk) {
           var json = JSON.parse(chunk);
           var jsonData = json.data;

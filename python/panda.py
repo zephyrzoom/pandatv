@@ -9,7 +9,7 @@ import os
 import platform
 import re
 
-CHATINFOURL = 'http://www.panda.tv/ajax_chatinfo?roomid='
+CHATINFOURL = 'http://riven.panda.tv/chatroom/getinfo?roomid='
 IGNORE_LEN = 12
 META_LEN = 4
 CHECK_LEN = 4

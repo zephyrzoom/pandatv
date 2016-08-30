@@ -1,8 +1,10 @@
 var http = require('http');
 var net = require('net');
 
+const CHATROOM = 'http://riven.panda.tv/chatroom/getinfo?roomid=';
+
 function getChatInfo(roomid) {
-    http.get('http://www.panda.tv/ajax_chatinfo?roomid=' + roomid, function(res) {
+    http.get(CHATROOM + roomid, function(res) {
         res.on('data', function(chunk) {
             var json = JSON.parse(chunk);
             var jsonData = json.data;
@@ -148,4 +150,4 @@ function formatMsg(msg) {
         console.log('==========观众人数' + content + '==========');
     }
 }
-getChatInfo(66666);
+getChatInfo(89757);
