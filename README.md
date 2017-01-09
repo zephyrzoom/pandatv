@@ -1,7 +1,9 @@
 #PandaTV弹幕助手
 该弹幕助手通过分析抓包数据实现，仅供学习参考。
 有三个版本可供选择，python、nodejs和electron。
-程序已在Linuxmint、OSX、Win8.1下测试。需要附带点歌功能的新版本请看[这里](https://github.com/zephyrzoom/707music)。
+程序已在Linuxmint、OSX、Win8.1下测试。需要附带
+点歌功能的新版本请看[这里](https://github.com/zephyrzoom/707music)。
+
 ![login](/docs/static_files/login.png)
 
 ![danmu](/docs/static_files/danmu.png)
