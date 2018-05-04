@@ -79,7 +79,7 @@ function start(chatInfo) {
 
 
 function sendData(s, msg) {
-    var data = new Buffer(msg.length + 6);
+    var data = Buffer.alloc(msg.length + 6);
     data.writeInt16BE(6, 0);
     data.writeInt16BE(2, 2);
     data.writeInt16BE(msg.length, 4);
@@ -88,7 +88,7 @@ function sendData(s, msg) {
 }
 
 function sendKeepalive(s) {
-    var data = new Buffer(4);
+    var data = Buffer.alloc(4);
     data.writeInt16BE(6, 0);
     data.writeInt16BE(0, 2);
     s.write(data);
